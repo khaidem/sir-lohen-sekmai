@@ -1,0 +1,77 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:3635083131088358320",
+      "lastPropertyId": "10:4331275718908045829",
+      "name": "GarbagesCollectionBox",
+      "properties": [
+        {
+          "id": "1:6801128762510117714",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4999858860417089911",
+          "name": "collectionDate",
+          "type": 9
+        },
+        {
+          "id": "3:5862429485710861727",
+          "name": "longitude",
+          "type": 9
+        },
+        {
+          "id": "4:7053175038788751444",
+          "name": "latitude",
+          "type": 9
+        },
+        {
+          "id": "5:571796253365966868",
+          "name": "customerNo",
+          "type": 9
+        },
+        {
+          "id": "6:5236672908339872603",
+          "name": "imagePath",
+          "type": 9
+        },
+        {
+          "id": "7:3676064074918147159",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "8:8057050968395241108",
+          "name": "customerType",
+          "type": 9
+        },
+        {
+          "id": "9:7640669980688317652",
+          "name": "qrString",
+          "type": 9
+        },
+        {
+          "id": "10:4331275718908045829",
+          "name": "isPhoto",
+          "type": 1
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "1:3635083131088358320",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
