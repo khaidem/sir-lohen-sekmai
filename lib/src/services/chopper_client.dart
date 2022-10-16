@@ -3,9 +3,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snp_garbage_collection/src/auth/auth.dart';
 import 'package:snp_garbage_collection/src/core/core.dart';
 import 'package:snp_garbage_collection/src/customer/customer.dart';
+import 'package:snp_garbage_collection/src/payment/example.dart';
 import 'package:snp_garbage_collection/src/qr_scanner/data/model/model.dart';
 import 'package:snp_garbage_collection/src/services/chopper_services/customer/customers.service.dart';
 import 'package:snp_garbage_collection/src/services/chopper_services/garbages/garbages.service.dart';
+import 'package:snp_garbage_collection/src/services/chopper_services/payments/payments.service.dart';
 import 'package:snp_garbage_collection/src/services/chopper_services/profile/profile.service.dart';
 import '../profile/data/data.dart';
 
@@ -21,7 +23,8 @@ final chopper = ChopperClient(
       AuthService.create(),
       GarbagesService.create(),
       CustomersService.create(),
-      ProfileService.create()
+      ProfileService.create(),
+      PaymentsService.create(),
     ],
     converter: GenericJsonConvertor({
       LoginResponse: (jsonDate) => LoginResponse.fromJson(jsonDate),
@@ -31,6 +34,7 @@ final chopper = ChopperClient(
       CustomerInfo: (jsonDate) => CustomerInfo.fromJson(jsonDate),
       CustomerModel: (jsonDate) => CustomerModel.fromJson(jsonDate),
       ProfileModel: (jsonDate) => ProfileModel.fromJson(jsonDate),
+      PaymentModel: (jsonDate) => PaymentModel.fromJson(jsonDate),
     }),
     errorConverter: const JsonConverter(),
     interceptors: [
