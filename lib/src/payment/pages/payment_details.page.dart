@@ -1,13 +1,17 @@
 import 'dart:convert';
 
+import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snp_garbage_collection/src/core/core.dart';
+import 'package:snp_garbage_collection/src/core/helper/get_position.dart';
 import 'package:snp_garbage_collection/src/payment/example.dart';
 import 'package:http/http.dart' as http;
+import 'package:snp_garbage_collection/src/router/router.dart';
 
 class PaymentDetailPage extends StatefulWidget {
   const PaymentDetailPage({
@@ -25,12 +29,14 @@ class PaymentDetailPage extends StatefulWidget {
 class _PaymentDetailPageState extends State<PaymentDetailPage> {
   List<PaymentModel> f = [];
   late final Future<List<PaymentModel>> myFuture;
+
   @override
   void initState() {
     super.initState();
     myFuture = getPayment();
   }
 
+//*** This Method will show  */
   Future<List<PaymentModel>> getPayment() async {
     String baseUrl =
         'https://staging.sekmaimunicipalcouncild2d.com/api/payments/${widget.smcUser}';
@@ -59,27 +65,37 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
     return l;
   }
 
-  String body = json.encode({
-    'customer_id': '127',
-    'month': '1',
-    'year': '2022',
-    'geo_location': "24.747031,93.948389"
-  });
-  void payDone() async {
+  //*** This Method will pay the amount */
+  Future payDone(
+    String customerId,
+    String month,
+    String year,
+  ) async {
     String baseUrl =
         'https://staging.sekmaimunicipalcouncild2d.com/api/payments';
     final pref = await SharedPreferences.getInstance();
     String? extractUser = pref.getString('token');
     final url = Uri.parse(baseUrl);
+    Position _position = await getPosition();
+
+    _position;
     try {
-      final respon = await http.post(
+      final response = await http.post(
         url,
         headers: {
           "Token": extractUser!,
         },
-        body: body,
+        body: json.encode({
+          'customer_id': customerId,
+          'month': month,
+          'year': year,
+          'geo_location': "${_position.latitude},${_position.longitude}"
+        }),
       );
-    } catch (error) {}
+      logger.e(response.toString());
+    } catch (error) {
+      rethrow;
+    }
   }
 
   @override
@@ -87,6 +103,14 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.nameUser),
+        actions: [
+          IconButton(
+              onPressed: () {
+                context.router.replace(PaymentDetailsRoute(
+                    smcUser: widget.smcUser, nameUser: widget.nameUser));
+              },
+              icon: Icon(Icons.refresh))
+        ],
       ),
       body: FutureBuilder<List<PaymentModel>>(
         future: myFuture,
@@ -100,8 +124,8 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
                     itemCount: f.length,
                     itemBuilder: (c, i) {
                       final item = f[i];
-                      IconData icon = FontAwesomeIcons.store;
-                      Color backgroundColor = Colors.amber;
+                      // IconData icon = FontAwesomeIcons.store;
+                      // Color backgroundColor = Colors.amber;
                       Color color = Colors.black87;
 
                       return ListTile(
@@ -132,26 +156,32 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
                           children: const [],
                         ),
                         trailing: ElevatedButton(
-                            onPressed: () => showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                      // title: const Text('Payment'),
-                                      content: const Text(
-                                          'Are you sure you want to pay this payment '),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'Cancel'),
-                                          child: const Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'OK'),
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    )),
-                            child: Text('Pay')),
+                          onPressed: () => showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                    // title: const Text('Payment'),
+                                    content: const Text(
+                                        'Are you sure you want to pay this payment '),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'Cancel'),
+                                        child: const Text('Cancel'),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            payDone(item.customerId, item.month,
+                                                item.year);
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  )),
+                          child: const Text('Pay'),
+                        ),
                         onTap: () {
                           /// This will clear previously selected data or photo
                           // context.read<CustomerPhotoCubit>().reset();
