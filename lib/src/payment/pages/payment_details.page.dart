@@ -66,68 +66,61 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
       ),
       body: FutureBuilder<List<PaymentModel>>(
         future: myFuture,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.separated(
-                separatorBuilder: (context, index) => const Divider(),
-                itemCount: f.length,
-                itemBuilder: (c, i) {
-                  final item = f[i];
-                  IconData icon = FontAwesomeIcons.store;
-                  Color backgroundColor = Colors.amber;
-                  Color color = Colors.black87;
+        builder: (context, snapshot) => snapshot.hasData
+            ? f.isEmpty
+                ? const Center(
+                    child: Text('No Due'),
+                  )
+                : ListView.separated(
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemCount: f.length,
+                    itemBuilder: (c, i) {
+                      final item = f[i];
+                      IconData icon = FontAwesomeIcons.store;
+                      Color backgroundColor = Colors.amber;
+                      Color color = Colors.black87;
 
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: backgroundColor,
-                      child: FaIcon(
-                        icon,
-                        size: 21,
-                        color: color,
-                      ),
-                    ),
-
-                    title: Column(
-                      children: [
-                        Row(
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          child: FaIcon(
+                            (FontAwesomeIcons.creditCard),
+                            size: 21,
+                            color: color,
+                          ),
+                        ),
+                        title: Column(
                           children: [
-                            Text("Customer Id ${item.customerId}"),
+                            Row(
+                              children: [Text(item.monthName), Text(item.year)],
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Row(
+                              children: [
+                                Text("Rs: ${item.amount}"),
+                              ],
+                            ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Text(item.monthName),
-                          ],
+                        subtitle: Column(
+                          children: const [],
                         ),
-                      ],
-                    ),
-                    // subtitle: Column(
-                    //   children: [
+                        trailing: ElevatedButton(
+                            onPressed: () {}, child: Text('Pay')),
+                        onTap: () {
+                          /// This will clear previously selected data or photo
+                          // context.read<CustomerPhotoCubit>().reset();
+                        },
+                      );
+                    })
+            :
 
-                    //   ],
-                    // ),
-                    trailing: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Rs : ${item.amount}'),
-                        Text("Year :  ${item.year}"),
-                        Text("Month ${item.month}")
-                      ],
-                    ),
-                    onTap: () {
-                      /// This will clear previously selected data or photo
-                      // context.read<CustomerPhotoCubit>().reset();
-                    },
-                  );
-                });
-          } else if (snapshot.hasError) {
-            return const Center(child: Text('Somthing Went Wrong Try Again'));
-          }
-
-          // By default, show a loading spinner.
-          return const Center(child: CircularProgressIndicator());
-        },
+            // By default, show a loading spinner.
+            const Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
     );
   }
