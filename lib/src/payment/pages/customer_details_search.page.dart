@@ -18,6 +18,7 @@ import 'package:snp_garbage_collection/src/core/widgets/widgets.dart';
 import 'package:snp_garbage_collection/src/customer/customer.dart';
 import 'package:snp_garbage_collection/src/customer/logic/customer_photo/customer_photo_cubit.dart';
 import 'package:snp_garbage_collection/src/draft/logic/draft/draft_cubit.dart';
+import 'package:snp_garbage_collection/src/router/router.dart';
 import 'package:uuid/uuid.dart';
 
 class CustomerDetailsSearchPage extends StatelessWidget {
@@ -48,12 +49,17 @@ class CustomerDetailsSearchPage extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 3,
+              height: 20,
             ),
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30),
+              margin: const EdgeInsets.symmetric(horizontal: 110),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  PaymentDetailsRoute(
+                    nameUser: customerModel.name,
+                    smcUser: customerModel.customerNo,
+                  );
+                },
                 child: const Text('Payments'),
               ),
             )

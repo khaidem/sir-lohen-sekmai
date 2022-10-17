@@ -18,7 +18,7 @@ class _$PaymentsService extends PaymentsService {
 
   @override
   Future<Response<List<PaymentModel>>> payments() {
-    final $url = '/garbages';
+    final $url = '/payments';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<List<PaymentModel>, PaymentModel>($request);
   }

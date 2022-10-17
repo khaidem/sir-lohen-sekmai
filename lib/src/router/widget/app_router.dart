@@ -7,6 +7,7 @@ import 'package:snp_garbage_collection/src/customer/pages/pages.dart';
 import 'package:snp_garbage_collection/src/home/home.dart';
 import 'package:snp_garbage_collection/src/main/pages/main.page.dart';
 import 'package:snp_garbage_collection/src/draft/pages/pages.dart';
+import 'package:snp_garbage_collection/src/payment/pages/customer_details_search.page.dart';
 import 'package:snp_garbage_collection/src/payment/pages/pages.dart';
 import 'package:snp_garbage_collection/src/payment/pages/payment.page.dart';
 import 'package:snp_garbage_collection/src/profile/pages/pages.dart';
@@ -43,6 +44,10 @@ import 'package:snp_garbage_collection/src/qr_scanner/pages/pages.dart';
                   name: 'CustomerDetailsRoute',
                 ),
                 AutoRoute(page: PaymentPage, name: 'PaymentRoute'),
+                AutoRoute(
+                  page: CustomerDetailsSearchPage,
+                  name: 'CustomerDetailsSearchRoute',
+                ),
                 AutoRoute(page: PaymentDetailPage, name: 'PaymentDetailsRoute'),
                 RedirectRoute(path: '*', redirectTo: ''),
               ],

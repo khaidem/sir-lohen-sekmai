@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
@@ -58,6 +59,29 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
     return l;
   }
 
+  String body = json.encode({
+    'customer_id': '127',
+    'month': '1',
+    'year': '2022',
+    'geo_location': "24.747031,93.948389"
+  });
+  void payDone() async {
+    String baseUrl =
+        'https://staging.sekmaimunicipalcouncild2d.com/api/payments';
+    final pref = await SharedPreferences.getInstance();
+    String? extractUser = pref.getString('token');
+    final url = Uri.parse(baseUrl);
+    try {
+      final respon = await http.post(
+        url,
+        headers: {
+          "Token": extractUser!,
+        },
+        body: body,
+      );
+    } catch (error) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,7 +132,26 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
                           children: const [],
                         ),
                         trailing: ElevatedButton(
-                            onPressed: () {}, child: Text('Pay')),
+                            onPressed: () => showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                      // title: const Text('Payment'),
+                                      content: const Text(
+                                          'Are you sure you want to pay this payment '),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'Cancel'),
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'OK'),
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    )),
+                            child: Text('Pay')),
                         onTap: () {
                           /// This will clear previously selected data or photo
                           // context.read<CustomerPhotoCubit>().reset();

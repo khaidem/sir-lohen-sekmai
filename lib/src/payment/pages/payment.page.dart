@@ -27,8 +27,9 @@ class PaymentPage extends StatelessWidget {
                 );
                 logger.i("${customer?.customerNo}");
                 if (customer != null) {
-                  context.router
-                      .push(CustomerDetailsRoute(customerModel: customer));
+                  context.router.push(
+                    CustomerDetailsSearchRoute(customerModel: customer),
+                  );
                 }
               },
               icon: const Icon(Icons.search),
@@ -81,53 +82,56 @@ class _CustomerListViewState extends State<CustomerListView> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-        child: PagedListView<int, CustomerModel>.separated(
-          pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<CustomerModel>(
-            itemBuilder: (context, item, index) {
-              IconData icon = FontAwesomeIcons.store;
-              Color backgroundColor = Colors.amber;
-              Color color = Colors.black87;
+      child: PagedListView<int, CustomerModel>.separated(
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<CustomerModel>(
+          itemBuilder: (context, item, index) {
+            IconData icon = FontAwesomeIcons.store;
+            Color backgroundColor = Colors.amber;
+            Color color = Colors.black87;
 
-              if (item.customerType == "RESIDENTIAL") {
-                icon = FontAwesomeIcons.home;
-                backgroundColor = Colors.green;
-                color = Colors.white;
-              }
+            if (item.customerType == "RESIDENTIAL") {
+              icon = FontAwesomeIcons.home;
+              backgroundColor = Colors.green;
+              color = Colors.white;
+            }
 
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: backgroundColor,
-                  child: FaIcon(
-                    icon,
-                    size: 21,
-                    color: color,
-                  ),
+            return ListTile(
+              leading: CircleAvatar(
+                backgroundColor: backgroundColor,
+                child: FaIcon(
+                  icon,
+                  size: 21,
+                  color: color,
                 ),
-                title: Text(item.name),
-                subtitle: Text(item.customerNo),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () {
-                  /// This will clear previously selected data or photo
-                  // context.read<CustomerPhotoCubit>().reset();
-                  context.router.push(
-                    PaymentDetailsRoute(
-                      nameUser: item.name,
-                      smcUser: item.customerNo,
-                    ),
-                  );
-                },
-              );
-            },
-            // newPageProgressIndicatorBuilder: (context) =>
-            //     const CircularProgressIndicator(),
-            // firstPageErrorIndicatorBuilder: (_) => FirstPageErrorIndicator(
-            //   error: _pagingController.error,
-            //   onTryAgain: () => _pagingController.refresh(),
-            // ),
-          ),
-          separatorBuilder: (context, index) => const Divider(),
+              ),
+              title: Text(item.name),
+              subtitle: Text(item.customerNo),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                /// This will clear previously selected data or photo
+                // context.read<CustomerPhotoCubit>().reset();
+                context.router.push(
+                  PaymentDetailsRoute(
+                    nameUser: item.name,
+                    smcUser: item.customerNo,
+                  ),
+                );
+              },
+            );
+          },
+          // newPageProgressIndicatorBuilder: (context) =>
+          //     const CircularProgressIndicator(),
+          // firstPageErrorIndicatorBuilder: (_) => FirstPageErrorIndicator(
+          //   error: _pagingController.error,
+          //   onTryAgain: () => _pagingController.refresh(),
+          // ),
         ),
-        onRefresh: () => Future.sync(() => _pagingController.refresh()));
+        separatorBuilder: (context, index) => const Divider(),
+      ),
+      onRefresh: () => Future.sync(
+        () => _pagingController.refresh(),
+      ),
+    );
   }
 }
