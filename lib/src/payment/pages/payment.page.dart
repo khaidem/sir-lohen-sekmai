@@ -110,7 +110,12 @@ class _CustomerListViewState extends State<CustomerListView> {
                 onTap: () {
                   /// This will clear previously selected data or photo
                   // context.read<CustomerPhotoCubit>().reset();
-                  context.router.push(PaymentDetailsRoute(nameUser: item.name));
+                  context.router.push(
+                    PaymentDetailsRoute(
+                      nameUser: item.name,
+                      smcUser: item.customerNo,
+                    ),
+                  );
                 },
               );
             },

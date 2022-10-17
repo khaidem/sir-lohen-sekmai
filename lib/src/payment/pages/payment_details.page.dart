@@ -12,8 +12,10 @@ class PaymentDetailPage extends StatefulWidget {
   const PaymentDetailPage({
     Key? key,
     required this.nameUser,
+    required this.smcUser,
   }) : super(key: key);
   final String nameUser;
+  final String smcUser;
 
   @override
   State<PaymentDetailPage> createState() => _PaymentDetailPageState();
@@ -28,14 +30,13 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
     myFuture = getPayment();
   }
 
-  String baseUrl =
-      'https://staging.sekmaimunicipalcouncild2d.com/api/payments/SMC00072';
-
   Future<List<PaymentModel>> getPayment() async {
+    String baseUrl =
+        'https://staging.sekmaimunicipalcouncild2d.com/api/payments/${widget.smcUser}';
     final pref = await SharedPreferences.getInstance();
     String? extractUser = pref.getString('token');
-    logger.i('extraUsere$extractUser');
-    logger.e('payment$extractUser');
+    // logger.i('extraUsere$extractUser');
+    // logger.e('payment$extractUser');
     List<PaymentModel> l = [];
     final url = Uri.parse(baseUrl);
     try {
@@ -121,7 +122,7 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
                   );
                 });
           } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
+            return const Center(child: Text('Somthing Went Wrong Try Again'));
           }
 
           // By default, show a loading spinner.

@@ -3,7 +3,7 @@ import 'package:snp_garbage_collection/src/payment/example.dart';
 
 part "payments.service.chopper.dart";
 
-@ChopperApi(baseUrl: "/garbages")
+@ChopperApi(baseUrl: "/payments")
 abstract class PaymentsService extends ChopperService {
   // A helper method that helps instantiating the service. You can omit this method and use the generated class directly instead.
   static PaymentsService create({ChopperClient? client}) =>

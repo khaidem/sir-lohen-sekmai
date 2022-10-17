@@ -9,24 +9,23 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i4;
-import 'package:flutter/material.dart' as _i14;
+import 'package:flutter/material.dart' as _i13;
 
 import '../../auth/auth.dart' as _i2;
 import '../../camera/pages/camera.page.dart' as _i7;
 import '../../core/flow/authentication_flow/authentication.flow.dart' as _i1;
-import '../../customer/customer.dart' as _i15;
+import '../../customer/customer.dart' as _i14;
 import '../../customer/pages/customer_details.page.dart' as _i9;
 import '../../customer/pages/pages.dart' as _i8;
-import '../../draft/pages/pages.dart' as _i12;
+import '../../draft/pages/pages.dart' as _i11;
 import '../../home/home.dart' as _i5;
 import '../../main/pages/main.page.dart' as _i3;
-import '../../payment/pages/pages.dart' as _i11;
-import '../../payment/pages/payment.page.dart' as _i10;
-import '../../profile/pages/pages.dart' as _i13;
+import '../../payment/pages/pages.dart' as _i10;
+import '../../profile/pages/pages.dart' as _i12;
 import '../../qr_scanner/pages/pages.dart' as _i6;
 
 class AppRouter extends _i4.RootStackRouter {
-  AppRouter([_i14.GlobalKey<_i14.NavigatorState>? navigatorKey])
+  AppRouter([_i13.GlobalKey<_i13.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
@@ -90,16 +89,16 @@ class AppRouter extends _i4.RootStackRouter {
       final args = routeData.argsAs<PaymentDetailsRouteArgs>();
       return _i4.MaterialPageX<dynamic>(
           routeData: routeData,
-          child:
-              _i11.PaymentDetailPage(key: args.key, nameUser: args.nameUser));
+          child: _i10.PaymentDetailPage(
+              key: args.key, nameUser: args.nameUser, smcUser: args.smcUser));
     },
     DraftRoute.name: (routeData) {
       return _i4.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i12.DraftPage());
+          routeData: routeData, child: const _i11.DraftPage());
     },
     ProfileRoute.name: (routeData) {
       return _i4.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i13.ProfilePage());
+          routeData: routeData, child: const _i12.ProfilePage());
     }
   };
 
@@ -255,7 +254,7 @@ class CustomersRoute extends _i4.PageRouteInfo<void> {
 /// generated route for [_i9.CustomerDetailsPage]
 class CustomerDetailsRoute extends _i4.PageRouteInfo<CustomerDetailsRouteArgs> {
   CustomerDetailsRoute(
-      {_i14.Key? key, required _i15.CustomerModel customerModel})
+      {_i13.Key? key, required _i14.CustomerModel customerModel})
       : super(name,
             path: 'customer-details-page',
             args: CustomerDetailsRouteArgs(
@@ -267,9 +266,9 @@ class CustomerDetailsRoute extends _i4.PageRouteInfo<CustomerDetailsRouteArgs> {
 class CustomerDetailsRouteArgs {
   const CustomerDetailsRouteArgs({this.key, required this.customerModel});
 
-  final _i14.Key? key;
+  final _i13.Key? key;
 
-  final _i15.CustomerModel customerModel;
+  final _i14.CustomerModel customerModel;
 }
 
 /// generated route for [_i10.PaymentPage]
@@ -279,32 +278,37 @@ class PaymentRoute extends _i4.PageRouteInfo<void> {
   static const String name = 'PaymentRoute';
 }
 
-/// generated route for [_i11.PaymentDetailPage]
+/// generated route for [_i10.PaymentDetailPage]
 class PaymentDetailsRoute extends _i4.PageRouteInfo<PaymentDetailsRouteArgs> {
-  PaymentDetailsRoute({_i14.Key? key, required String nameUser})
+  PaymentDetailsRoute(
+      {_i13.Key? key, required String nameUser, required String smcUser})
       : super(name,
             path: 'payment-detail-page',
-            args: PaymentDetailsRouteArgs(key: key, nameUser: nameUser));
+            args: PaymentDetailsRouteArgs(
+                key: key, nameUser: nameUser, smcUser: smcUser));
 
   static const String name = 'PaymentDetailsRoute';
 }
 
 class PaymentDetailsRouteArgs {
-  const PaymentDetailsRouteArgs({this.key, required this.nameUser});
+  const PaymentDetailsRouteArgs(
+      {this.key, required this.nameUser, required this.smcUser});
 
-  final _i14.Key? key;
+  final _i13.Key? key;
 
   final String nameUser;
+
+  final String smcUser;
 }
 
-/// generated route for [_i12.DraftPage]
+/// generated route for [_i11.DraftPage]
 class DraftRoute extends _i4.PageRouteInfo<void> {
   const DraftRoute() : super(name, path: '');
 
   static const String name = 'DraftRoute';
 }
 
-/// generated route for [_i13.ProfilePage]
+/// generated route for [_i12.ProfilePage]
 class ProfileRoute extends _i4.PageRouteInfo<void> {
   const ProfileRoute() : super(name, path: '');
 
