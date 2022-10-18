@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snp_garbage_collection/src/core/core.dart';
 import 'package:snp_garbage_collection/src/core/helper/get_position.dart';
+import 'package:snp_garbage_collection/src/core/widgets/widgets.dart';
 import 'package:snp_garbage_collection/src/payment/example.dart';
 import 'package:http/http.dart' as http;
 
@@ -105,9 +106,6 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.userName),
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.refresh))
-        ],
       ),
       body: FutureBuilder<List<PaymentModel>>(
         future: getPayment(),
@@ -170,7 +168,7 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
                                           setState(() {
                                             payDone(item.customerId, item.month,
                                                 item.year);
-                                            print('setSate');
+                                            showSuccessHUD(title: 'Success');
                                           });
                                           // getPayment();
                                           Navigator.pop(context);

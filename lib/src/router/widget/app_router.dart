@@ -10,7 +10,7 @@ import 'package:snp_garbage_collection/src/profile/pages/pages.dart';
 import 'package:snp_garbage_collection/src/qr_scanner/pages/pages.dart';
 
 import '../../payment/example.dart';
-import '../../payment/pages/customer_details_search.page.dart';
+// import '../../payment/pages/customer_details_search.page.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -43,10 +43,6 @@ import '../../payment/pages/customer_details_search.page.dart';
                   name: 'CustomerDetailsRoute',
                 ),
                 AutoRoute(page: PaymentPage, name: 'PaymentRoute'),
-                AutoRoute(
-                  page: CustomerDetailsSearchPage,
-                  name: 'CustomerDetailsSearchRoute',
-                ),
                 AutoRoute(page: PaymentDetailPage, name: 'PaymentDetailsRoute'),
                 RedirectRoute(path: '*', redirectTo: ''),
               ],

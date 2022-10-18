@@ -22,9 +22,9 @@ class LoginButtonView extends StatelessWidget {
           final formData = form.value;
 
           logger.i(formData);
-          context
-              .read<LoginCubit>()
-              .login(loginDto: LoginDto.fromJson(formData));
+          context.read<LoginCubit>().login(
+                loginDto: LoginDto.fromJson(formData),
+              );
         },
       ),
     );

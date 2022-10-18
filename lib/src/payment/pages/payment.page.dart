@@ -7,6 +7,7 @@ import 'package:snp_garbage_collection/src/core/core.dart';
 import 'package:snp_garbage_collection/src/customer/customer.dart';
 import 'package:snp_garbage_collection/src/customer/data/repo/customer.repo.dart';
 import 'package:snp_garbage_collection/src/customer_search/pages/customer_search.page.dart';
+import 'package:snp_garbage_collection/src/home/widget/widget.dart';
 import 'package:snp_garbage_collection/src/router/router.dart';
 
 class PaymentPage extends StatelessWidget {
@@ -17,118 +18,43 @@ class PaymentPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Payments'),
-          actions: [
-            IconButton(
-              onPressed: () async {
-                final customer = await showSearch(
-                  context: context,
-                  delegate: CustomerSearch(),
-                );
-                logger.i("${customer?.customerNo}");
-                if (customer != null) {
-                  context.router.push(
-                    CustomerDetailsSearchRoute(customerModel: customer),
-                  );
-                }
-              },
-              icon: const Icon(Icons.search),
-            ),
+          // actions: [
+          //   IconButton(
+          //     onPressed: () async {
+          //       final customer = await showSearch(
+          //         context: context,
+          //         delegate: CustomerSearch(),
+          //       );
+          //       logger.i("${customer?.customerNo}");
+          //       if (customer != null) {
+          //         context.router.push(
+          //           CustomerDetailsSearchRoute(customerModel: customer),
+          //         );
+          //       }
+          //     },
+          //     icon: const Icon(Icons.search),
+          //   ),
+          // ],
+        ),
+        body: ListView(
+          padding: const EdgeInsets.all(16),
+          children: const [
+            // ElevatedButton(
+            //   onPressed: () {
+            //     context.read<AuthenticationCubit>().logout();
+            //   },
+            //   child: const Text('LogOut'),
+            // ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     context.router.push(const CustomersRoute());
+            //   },
+            //   child: const Text('Customers Page'),
+            // ),
+
+            QRCardView(),
+            CustomerCardView(),
           ],
-        ),
-        body: const CustomerListView());
-  }
-}
-
-class CustomerListView extends StatefulWidget {
-  const CustomerListView({Key? key}) : super(key: key);
-
-  @override
-  State<CustomerListView> createState() => _CustomerListViewState();
-}
-
-class _CustomerListViewState extends State<CustomerListView> {
-  static const _pageLimit = pageLimit;
-  late final CustomerRepo customerRepo;
-  final PagingController<int, CustomerModel> _pagingController =
-      PagingController(firstPageKey: 1);
-
-  @override
-  void initState() {
-    customerRepo = context.read<CustomerRepo>();
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
-
-    super.initState();
-  }
-
-  Future<void> _fetchPage(int pageKey) async {
-    try {
-      final newItems =
-          await customerRepo.getCustomers(page: pageKey, limit: _pageLimit);
-      final isLastPage = newItems.length < _pageLimit;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPagekey = pageKey + 1;
-        _pagingController.appendPage(newItems, nextPagekey);
-      }
-    } catch (error) {
-      _pagingController.error = error.toString();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return RefreshIndicator(
-      child: PagedListView<int, CustomerModel>.separated(
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<CustomerModel>(
-          itemBuilder: (context, item, index) {
-            IconData icon = FontAwesomeIcons.store;
-            Color backgroundColor = Colors.amber;
-            Color color = Colors.black87;
-
-            if (item.customerType == "RESIDENTIAL") {
-              icon = FontAwesomeIcons.home;
-              backgroundColor = Colors.green;
-              color = Colors.white;
-            }
-
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundColor: backgroundColor,
-                child: FaIcon(
-                  icon,
-                  size: 21,
-                  color: color,
-                ),
-              ),
-              title: Text(item.name),
-              subtitle: Text(item.customerNo),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                /// This will clear previously selected data or photo
-                // context.read<CustomerPhotoCubit>().reset();
-                context.router.push(
-                  PaymentDetailsRoute(
-                      userName: item.name, customerNo: item.customerNo),
-                );
-              },
-            );
-          },
-          // newPageProgressIndicatorBuilder: (context) =>
-          //     const CircularProgressIndicator(),
-          // firstPageErrorIndicatorBuilder: (_) => FirstPageErrorIndicator(
-          //   error: _pagingController.error,
-          //   onTryAgain: () => _pagingController.refresh(),
-          // ),
-        ),
-        separatorBuilder: (context, index) => const Divider(),
-      ),
-      onRefresh: () => Future.sync(
-        () => _pagingController.refresh(),
-      ),
-    );
+        ));
   }
 }

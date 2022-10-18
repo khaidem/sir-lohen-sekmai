@@ -18,6 +18,7 @@ import 'package:snp_garbage_collection/src/core/widgets/widgets.dart';
 import 'package:snp_garbage_collection/src/customer/customer.dart';
 import 'package:snp_garbage_collection/src/customer/logic/customer_photo/customer_photo_cubit.dart';
 import 'package:snp_garbage_collection/src/draft/logic/draft/draft_cubit.dart';
+import 'package:snp_garbage_collection/src/router/router.dart';
 import 'package:uuid/uuid.dart';
 
 class CustomerDetailsPage extends StatelessWidget {
@@ -47,6 +48,20 @@ class CustomerDetailsPage extends StatelessWidget {
                 child: CustomerPlaceImage(customerModel: customerModel),
               ),
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 110),
+              child: ElevatedButton(
+                onPressed: () {
+                  context.router.push(PaymentDetailsRoute(
+                      userName: customerModel.name,
+                      customerNo: customerModel.customerNo));
+                },
+                child: const Text('Payments'),
+              ),
+            )
           ],
         ),
       ),
