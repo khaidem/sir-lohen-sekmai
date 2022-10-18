@@ -110,7 +110,7 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
         ],
       ),
       body: FutureBuilder<List<PaymentModel>>(
-        future: myFuture,
+        future: getPayment(),
         builder: (context, snapshot) => snapshot.hasData
             ? f.isEmpty
                 ? const Center(
@@ -168,14 +168,11 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
                                       ElevatedButton(
                                         onPressed: () {
                                           setState(() {
-                                            getPayment();
                                             payDone(item.customerId, item.month,
                                                 item.year);
                                             print('setSate');
-
-                                            print('loadaata');
                                           });
-
+                                          // getPayment();
                                           Navigator.pop(context);
                                           print('pop');
                                         },
