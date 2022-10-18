@@ -2,16 +2,15 @@ import 'package:auto_route/auto_route.dart';
 import 'package:snp_garbage_collection/src/auth/auth.dart';
 import 'package:snp_garbage_collection/src/camera/pages/camera.page.dart';
 import 'package:snp_garbage_collection/src/core/flow/authentication_flow/authentication.flow.dart';
-import 'package:snp_garbage_collection/src/customer/pages/customer_details.page.dart';
 import 'package:snp_garbage_collection/src/customer/pages/pages.dart';
 import 'package:snp_garbage_collection/src/home/home.dart';
 import 'package:snp_garbage_collection/src/main/pages/main.page.dart';
 import 'package:snp_garbage_collection/src/draft/pages/pages.dart';
-import 'package:snp_garbage_collection/src/payment/pages/customer_details_search.page.dart';
-import 'package:snp_garbage_collection/src/payment/pages/pages.dart';
-import 'package:snp_garbage_collection/src/payment/pages/payment.page.dart';
 import 'package:snp_garbage_collection/src/profile/pages/pages.dart';
 import 'package:snp_garbage_collection/src/qr_scanner/pages/pages.dart';
+
+import '../../payment/example.dart';
+import '../../payment/pages/customer_details_search.page.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',

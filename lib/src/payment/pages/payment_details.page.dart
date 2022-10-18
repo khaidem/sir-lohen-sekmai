@@ -1,26 +1,22 @@
 import 'dart:convert';
 
-import 'package:auto_route/src/router/auto_router_x.dart';
-import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snp_garbage_collection/src/core/core.dart';
 import 'package:snp_garbage_collection/src/core/helper/get_position.dart';
 import 'package:snp_garbage_collection/src/payment/example.dart';
 import 'package:http/http.dart' as http;
-import 'package:snp_garbage_collection/src/router/router.dart';
 
 class PaymentDetailPage extends StatefulWidget {
   const PaymentDetailPage({
     Key? key,
-    required this.nameUser,
-    required this.smcUser,
+    required this.userName,
+    required this.customerNo,
   }) : super(key: key);
-  final String nameUser;
-  final String smcUser;
+  final String userName;
+  final String customerNo;
 
   @override
   State<PaymentDetailPage> createState() => _PaymentDetailPageState();
@@ -36,10 +32,11 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
     myFuture = getPayment();
   }
 
-//*** This Method will show  */
+//*** This Method will show all the user who did not pay or no due */
+
   Future<List<PaymentModel>> getPayment() async {
     String baseUrl =
-        'https://staging.sekmaimunicipalcouncild2d.com/api/payments/${widget.smcUser}';
+        'https://staging.sekmaimunicipalcouncild2d.com/api/payments/${widget.customerNo}';
     final pref = await SharedPreferences.getInstance();
     String? extractUser = pref.getString('token');
     // logger.i('extraUsere$extractUser');
@@ -80,7 +77,7 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
 
     _position;
     try {
-      final response = await http.post(
+      await http.post(
         url,
         headers: {
           "Token": extractUser!,
@@ -92,24 +89,24 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
           'geo_location': "${_position.latitude},${_position.longitude}"
         }),
       );
-      logger.e(response.toString());
+      // logger.e(response.toString());
     } catch (error) {
       rethrow;
     }
   }
 
+  loadData() async {
+    await getPayment();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // loadData();
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.nameUser),
+        title: Text(widget.userName),
         actions: [
-          IconButton(
-              onPressed: () {
-                context.router.replace(PaymentDetailsRoute(
-                    smcUser: widget.smcUser, nameUser: widget.nameUser));
-              },
-              icon: Icon(Icons.refresh))
+          IconButton(onPressed: () {}, icon: const Icon(Icons.refresh))
         ],
       ),
       body: FutureBuilder<List<PaymentModel>>(
@@ -171,10 +168,16 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
                                       ElevatedButton(
                                         onPressed: () {
                                           setState(() {
+                                            getPayment();
                                             payDone(item.customerId, item.month,
                                                 item.year);
-                                            Navigator.pop(context);
+                                            print('setSate');
+
+                                            print('loadaata');
                                           });
+
+                                          Navigator.pop(context);
+                                          print('pop');
                                         },
                                         child: const Text('OK'),
                                       ),

@@ -6,7 +6,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:snp_garbage_collection/src/core/core.dart';
 import 'package:snp_garbage_collection/src/customer/customer.dart';
 import 'package:snp_garbage_collection/src/customer/data/repo/customer.repo.dart';
-import 'package:snp_garbage_collection/src/customer/logic/customer_photo/customer_photo_cubit.dart';
 import 'package:snp_garbage_collection/src/customer_search/pages/customer_search.page.dart';
 import 'package:snp_garbage_collection/src/router/router.dart';
 
@@ -113,9 +112,7 @@ class _CustomerListViewState extends State<CustomerListView> {
                 // context.read<CustomerPhotoCubit>().reset();
                 context.router.push(
                   PaymentDetailsRoute(
-                    nameUser: item.name,
-                    smcUser: item.customerNo,
-                  ),
+                      userName: item.name, customerNo: item.customerNo),
                 );
               },
             );

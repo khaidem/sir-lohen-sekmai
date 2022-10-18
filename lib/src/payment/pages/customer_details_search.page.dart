@@ -5,14 +5,11 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:geolocator/geolocator.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:snp_garbage_collection/src/core/core.dart';
-import 'package:snp_garbage_collection/src/core/extension/theme.extension.dart';
-import 'package:snp_garbage_collection/src/core/helper/get_position.dart';
-import 'package:snp_garbage_collection/src/core/helper/logger.dart';
 import 'package:snp_garbage_collection/src/core/object_box/garbages_collection.box.dart';
 import 'package:snp_garbage_collection/src/core/widgets/widgets.dart';
 import 'package:snp_garbage_collection/src/customer/customer.dart';
@@ -55,10 +52,9 @@ class CustomerDetailsSearchPage extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 110),
               child: ElevatedButton(
                 onPressed: () {
-                  PaymentDetailsRoute(
-                    nameUser: customerModel.name,
-                    smcUser: customerModel.customerNo,
-                  );
+                  context.router.push(PaymentDetailsRoute(
+                      userName: customerModel.name,
+                      customerNo: customerModel.customerNo));
                 },
                 child: const Text('Payments'),
               ),
@@ -199,7 +195,7 @@ class CustomerPlaceImage extends StatelessWidget {
                   color: Colors.blueGrey.shade200,
                 ),
                 const SizedBox(height: 8),
-                Text(description),
+                const Text(description),
                 const SizedBox(height: 16),
                 ElevatedButton.icon(
                   icon: const FaIcon(FontAwesomeIcons.camera, size: 17),
